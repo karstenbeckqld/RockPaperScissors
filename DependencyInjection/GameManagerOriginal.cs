@@ -1,6 +1,6 @@
 namespace DependencyInjection;
 
-public class GameManager
+public class GameManagerOriginal
 {
     Random _rng = new Random();
 

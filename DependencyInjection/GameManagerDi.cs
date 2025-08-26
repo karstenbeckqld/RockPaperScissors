@@ -1,45 +1,24 @@
+// ReSharper disable ConvertToPrimaryConstructor
 namespace DependencyInjection;
 
-public class GameManagerOriginal
+public class GameManagerDi
 {
-    Random _rng = new Random();
+    private readonly IPlayer _player1;
+    private readonly IPlayer _player2;
+
+    public GameManagerDi(IPlayer player1, IPlayer player2)
+    {
+        _player1 = player1;
+        _player2 = player2;
+    }
 
     public RoundResult PlayRound()
     {
-        // Player 1 (Human)
-        Choice p1;
-
-        do
-        {
-            Console.WriteLine("Enter choice: (R)ock, (P)aper or (S)cissors: ");
-            var input =  Console.ReadLine().ToUpper();
-
-            if (input == "R")
-            {
-                p1 = Choice.Rock;
-                break;
-            }
-            
-            if (input == "P")
-            {
-                p1 = Choice.Paper;
-                break;
-            }
-            
-            if (input == "S")
-            {
-                p1 = Choice.Scissors;
-                break;
-            }
-            
-            Console.WriteLine("Invalid choice.");
-            
-        } while (true);
-
-        // Player 2 (Computer)
-        Choice p2 = (Choice) _rng.Next(0, 3);
-        Console.WriteLine($"Player 2 picked {p2.ToString()}");
-
+        var p1 = _player1.GetChoice();
+        var p2 = _player2.GetChoice();
+        
+        Console.WriteLine($"Player 1 picked {p1.ToString()} and player 2 picked {p2.ToString()}");
+        
         if (p1 == p2)
         {
             return RoundResult.Draw;
@@ -51,6 +30,7 @@ public class GameManagerOriginal
         {
             return RoundResult.Player1Win;
         }
+        
         return RoundResult.Player2Win;
     }
 }
